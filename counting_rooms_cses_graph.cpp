@@ -29,77 +29,69 @@
 using namespace std;
 
 #define endl '\n'
-typedef long long ll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
-#define pb push_back
-#define all(x) (x).begin(), (x).end()
-#define rall(x) (x).rbegin(), (x).rend()
 
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(NULL);
+    cin.tie(nullptr);
 
-    int n,m;
-    cin>>n>>m;
+    int n, m;
+    cin >> n >> m;
+
     char grid[n][m];
-    for(int i =0;i<n;i++){
-        for(int j =0;j<m;j++){
-            cin>>grid[i][j];
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> grid[i][j];
         }
     }
 
-    int rooms = 0;
-    
-    int dx[4]={0,-1,0,1};
-    int dy[4]={1,0,-1,0};
-
     int visited[n][m];
-    memset(visited,-1,sizeof visited);
+    memset(visited, 0, sizeof(visited));
 
-    for(int i =0;i<n;i++){
-        for(int j =0;j<m;j++){
+    int dx[4] = {0, -1, 0, 1};
+    int dy[4] = {1, 0, -1, 0};
 
-            for(int k =0;k<4;k++){
-                if(visited[i][j]==1 || grid[i][j]=='#')continue;
+    int rooms = 0;
 
-                queue<pair<int,int>>q;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
 
-                q.push({i,j});
-                visited[i][j]=1;
-                rooms++;
+            if (grid[i][j] == '#' || visited[i][j] == 1)
+                continue;
 
-                while(!q.empty()){
+            rooms++;
 
-                    pair<int,int> p = q.front();
-                    q.pop();
+            queue<pair<int, int>> q;
+            q.push({i, j});
+            visited[i][j] = 1;
 
-                    int x,y;
-                    x = p.first;
-                    y = p.second;
+            while (!q.empty()) {
 
-                    for(int k =0;k<4;k++){
-                        int r = x+dx[k];
-                        int c = y+dy[k];
+                pair<int, int> p = q.front();
+                q.pop();
 
-                        if(r>=0 && r<n && c>=0 && c<m){
-                            if(grid[r][c]=='.' && visited[r][c]==-1){
-                                q.push({r,c});
-                                visited[r][c]=1;
-                            }
-                        }
+                int x = p.first;
+                int y = p.second;
+
+                for (int k = 0; k < 4; k++) {
+
+                    int nx = x + dx[k];
+                    int ny = y + dy[k];
+
+                    if (nx >= 0 && nx < n &&
+                        ny >= 0 && ny < m &&
+                        grid[nx][ny] == '.' &&
+                        visited[nx][ny] == 0) {
+
+                        visited[nx][ny] = 1;
+                        q.push({nx, ny});
                     }
-
                 }
-
-
             }
         }
     }
 
-    cout<<rooms<<endl;
+    cout << rooms << endl;
 
     return 0;
 }
